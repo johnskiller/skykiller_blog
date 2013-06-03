@@ -5,13 +5,11 @@
 
 <dl>
     {% for year, date_year in dates|groupby( 'date.year' )|sort(reverse=True) %}  
-        {% for month, date_month in dates|groupby( 'date.month' )|sort(reverse=True) %}    
-            <h2>Archive {{ month }}, {{ year }}</h2>
-            {% for article in date_month %}
+            <h2>Archive of {{ year }}</h2>
+            {% for article in date_year %}
                 <dt>{{ article.locale_date }}</dt>
 				<dd><a href='/{{ article.url }}'>{{ article.title }}</a></dd>
             {% endfor %}
-        {% endfor %}
     {% endfor %}
 </dl>
 </section>
