@@ -38,18 +38,18 @@ Date: 2013-06-03
 
 	HOME=/home/yj
 	TMP=$HOME/tmp/blog
-	OUT=$HOME/html/blog
-	PELICAN=$HOME/bin/pelican
 	
 	echo "Checking-out working copy"
 	rm -rf $TMP
 	mkdir -p $TMP
-	mkdir -p $OUT
+	
 	GIT_WORK_TREE=$TMP git checkout -f
 	
-	source ~/pelican/bin/activate
+	. ~/pelican/bin/activate
 	echo "Generating blog"
-	$PELICAN -o $OUT -s $TMP/pelicanconf.py $TMP
+	cd $TMP
+	make publish
+	cp -r output/* /var/www/htdocs
 	rm -rf $TMP
 	
 	echo "Done"
