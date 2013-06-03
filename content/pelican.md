@@ -1,6 +1,7 @@
 Title: Install Pelican
 Category: Python
 Tags: pelican, python, blog
+Date: 2013/6/3
 
 安装Pelican很简单，基本上按照网站照做就好了
 
