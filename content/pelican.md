@@ -20,7 +20,7 @@ cd palican
 
 安装pelican
 ===========
-``` pip install pelican``` 就搞定了 
+``` pip install pelican markdown``` 就搞定了 
 
 写博客啦
 =======
@@ -31,3 +31,5 @@ cd palican
 ====
 写blog，可以用Markdown或者reStructed等格式，写完之后需要发布。也很简单，用```make html```命令可以生成整个网站的html文件，拷贝到www服务器相应目录就好了。
 
+自动发布
+========
