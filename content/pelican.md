@@ -11,12 +11,11 @@ Date: 2013-06-03
 
 安装了virtualenv之后，用下列命令创建一个pelican的环境并且激活
 
-```
-cd ~
-virtualenv pelican
-cd palican
-. bin/activate
-```
+
+	$ cd ~
+	$ virtualenv pelican
+	$ cd palican
+	$ . bin/activate
 
 安装pelican
 ===========
@@ -33,3 +32,24 @@ cd palican
 
 自动发布
 ========
+自动发布的前提条件是有直接访问git server的能力。我在做网站的主机上建了一个git server，这样本机写好blog，push到remote，触发如下post trigger
+
+	#!/bin/sh
+
+	HOME=/home/yj
+	TMP=$HOME/tmp/blog
+	OUT=$HOME/html/blog
+	PELICAN=$HOME/bin/pelican
+	
+	echo "Checking-out working copy"
+	rm -rf $TMP
+	mkdir -p $TMP
+	mkdir -p $OUT
+	GIT_WORK_TREE=$TMP git checkout -f
+	
+	source ~/pelican/bin/activate
+	echo "Generating blog"
+	$PELICAN -o $OUT -s $TMP/pelicanconf.py $TMP
+	rm -rf $TMP
+	
+	echo "Done"
