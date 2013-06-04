@@ -12,5 +12,7 @@ Recursive chmod only files within this folder:
 Recursive chmod only folders within this folder:
 
     find . -type d -exec chmod 0755 {} \;
+    
+Maybe you can put these to a shell script.
 
 
