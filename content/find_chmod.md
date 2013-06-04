@@ -3,6 +3,8 @@ Category: Linux
 Tags: shell, linux
 Date: 2013-06-04
 
+Sometime you want to change mode of files and folders to different value, here're the scripts:
+
 Recursive chmod only files within this folder:
 
     find . -type f -exec chmod 0600 {} \;
