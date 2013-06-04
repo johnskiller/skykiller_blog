@@ -28,7 +28,7 @@ Date: 2013-06-03
 
 发布
 ====
-写blog，可以用Markdown或者reStructed等格式，写完之后需要发布。也很简单，用```make html```命令可以生成整个网站的html文件，拷贝到www服务器相应目录就好了。
+写blog，可以用Markdown或者reStructedtext等格式，直接用文本编辑器编写。Sublime或者Mou等编辑器可以预览Markdown格式。写完之后需要发布。也很简单，用```make html```命令可以生成整个网站的html文件，拷贝到www服务器相应目录就好了。
 
 自动发布
 ========
@@ -36,7 +36,9 @@ Date: 2013-06-03
 
 	#!/bin/sh
 
-	HOME=/home/yj
+	export LC_ALL=zh_CN.UTF-8
+	
+	HOME=/home/john
 	TMP=$HOME/tmp/blog
 	
 	echo "Checking-out working copy"
