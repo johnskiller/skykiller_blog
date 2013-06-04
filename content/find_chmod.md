@@ -1,5 +1,5 @@
 Title: find and chmod only folders or files
-Category: Linux
+Category: linux
 Tags: shell, linux, script
 Date: 2013-06-04
 
