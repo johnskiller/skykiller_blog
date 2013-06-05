@@ -43,26 +43,89 @@ Date: 2013-06-03
 
 自动发布
 ========
-自动发布的前提条件是有直接访问git server的能力。我在做网站的主机上建了一个git server，这样本机写好blog，push到remote，触发如下post trigger
+自动发布的前提条件是有直接访问git server的能力。我在做网站的主机上建了一个git server，这样本机写好blog，push到remote，触发post trigger, `myblog.git/hooks/post-recieve`内容如下
 
-	#!/bin/sh
+```
+#! /bin/bash
+#
+# handle updates to our two interesting branches, staging and master.
 
-	export LC_ALL=zh_CN.UTF-8
-	
-	HOME=/home/john
-	TMP=$HOME/tmp/blog
-	
-	echo "Checking-out working copy"
-	rm -rf $TMP
-	mkdir -p $TMP
-	
-	GIT_WORK_TREE=$TMP git checkout -f
-	
-	. ~/pelican/bin/activate
-	echo "Generating blog"
-	cd $TMP
-	make publish
-	cp -r output/* /var/www/htdocs
-	rm -rf $TMP
-	
-	echo "Done"
+# function to dump given commit state to target directory
+# arguments: $1 - rev; $2 - target dir
+copy_to_dir() {
+    HOME=/home/yj
+    TMP=$HOME/tmp/blog
+    echo "checking-out working copy"
+    rm -rf $TMP
+    mkdir -p $TMP
+    
+    GIT_WORK_TREE="$TMP" git checkout -f "$1"
+    echo " GIT_WORK_TREE=$TMP git checkout -q -f $1"
+    #GIT_WORK_TREE="$TMP" git checkout -q -f "$1"
+. ~/pelican/bin/activate
+    echo "Generating blog"
+    cd $TMP
+    make publish
+    cp -r output/* /var/www/skykiller.com
+    echo "Done"
+}
+
+# function to handle an update to staging branch.
+# arguments: $1 - rev to check out
+update_deploy() {
+    copy_to_dir $1 /path/to/staging/site/webroot
+}
+
+# function to handle an update to master branch.
+update_test() {
+    copy_to_dir $1 /var/www
+}
+
+# function to handle one reference-change.
+# arguments:
+#    $1 - old revision, or all-0s on create
+#    $2 - new revision, or all-0s on removal
+#    $3 - reference (refs/heads/*, refs/tags/*, etc)
+refchange() {
+    local oldrev="$1" newrev="$2" ref="$3"
+    local deleted=false
+    local short_revname
+
+    echo "enter refchange(), args=$oldrev, $newrev, $ref"
+
+    if expr "$newrev" : '0*$' >/dev/null; then
+        deleted=true
+    elif ! git rev-parse "$newrev"; then
+        return # git rev-parse already printed an error
+    fi
+
+    case $ref in
+    refs/heads/deploy|refs/heads/test)
+        shortref=${refname#refs/heads/};;
+    *)
+        return;;
+    esac
+
+    # someone pushed a change to staging branch or master branch
+    if $deleted; then {
+        echo "WARNING: you've deleted branch $shortref"
+        echo "are you sure you wanted to do that?"
+        echo "The operating copy is still operating, and"
+        echo "will be updated when the branch is re-created."
+        } 1>&2
+        return
+    fi
+
+    # update either the staging copy or the master copy
+    update_$shortref "$newrev"
+}
+
+# main driver: update from input stream (if no arguments) or use arguments
+case $# in
+3)  refchange "$1" "$2" "$3";;
+0)  while read oldrev newrev refname; do
+        refchange $oldrev $newrev $refname
+    done;;
+*)  echo "ERROR: update hook called with $# arguments, expected 0 or 3" 1>&2;;
+esac
+```
