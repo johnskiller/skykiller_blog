@@ -9,6 +9,17 @@ Date: 2013-06-03
 ==========
 安装python虚拟环境的目的是不要搞乱系统的python环境。
 
+推荐用pip安装virtualenv
+
+    pip install virtualenv
+
+如果没有pip，只好从source安装了
+
+    curl -O https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.9.1.tar.gz
+    tar xvfz virtualenv-1.9.1.tar.gz
+    cd virtualenv-1.9.1
+    python setup.py install
+    
 安装了virtualenv之后，用下列命令创建一个pelican的环境并且激活
 
 
