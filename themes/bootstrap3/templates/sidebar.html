@@ -26,12 +26,12 @@
 {% endfor %}
 
 <li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
-{% for tag in tag_cloud %}
-<li class="tag-{{ tag.1 }}">
+{% for tag in tag_cloud | sort %}
+<span class="tag-{{ tag.1 }}">
     <a href="{{ SITEURL }}/{{ tag.0.url }}">
         <i class="icon-tag icon-large"></i>{{ tag.0 }}
     </a>
-</li>
+</span>
 {% endfor %}
 
 {% include 'twitter_profile.html' %}
