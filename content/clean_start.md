@@ -31,7 +31,7 @@ use `id john` to confirm john is in `www-data` group now.
 
 nginx
 =====
-try something new so no apache but []nginx][1].
+try something new so no apache but [nginx][1].
 
 dev env
 =======
@@ -42,7 +42,7 @@ install gcc, g++, gdb etc.
 
 pptp
 ====
-install pptp vpn and setup firewall to allow pptp traffic
+install pptp vpn and setup firewall to allow pptp traffic， please refer [this site][1] for detail
 
     apt-get install pptp
     
@@ -68,3 +68,4 @@ modify `/etc/arno-iptables-firewall/conf.d/00debian.conf`
 
     
 [1]: http://www.nginx.com/ "nginx"
+[2]: http://sysadmin.compxtreme.ro/how-to-install-a-pptp-server-on-debian-squeeze/
